@@ -75,6 +75,7 @@ td.p{max-width:260px}.vm{color:var(--mute);font-size:12px}
       <option value="inv">Urutkan: Tanggal Invoice</option><option value="jt">Urutkan: Jatuh Tempo</option><option value="tag">Urutkan: Total Tagihan</option>
       <option value="sisa">Urutkan: Sisa Tagihan</option><option value="sup">Urutkan: Supplier</option><option value="kode">Urutkan: Kode Order</option><option value="pic">Urutkan: PIC</option></select>
     <select id="dir" aria-label="Arah urutan"><option value="asc">A-Z</option><option value="desc" selected>Z-A</option></select>
+    <select id="per" aria-label="Baris per halaman"><option value="25">25 baris</option><option value="50">50 baris</option><option value="100" selected>100 baris</option><option value="200">200 baris</option></select>
     <button class="b soft" id="fbtn">Filter</button>
     <button class="b pur" id="refresh">Refresh</button>
   </div>
@@ -95,7 +96,7 @@ td.p{max-width:260px}.vm{color:var(--mute);font-size:12px}
 
 <script>
 (function(){
-var SID="1aOjMFoUlTJQvAfBpCek64NkjLV45pqps8rM4_S_JEkg",PER=25,DAY=864e5,n0=new Date(),TODAY=Date.UTC(n0.getFullYear(),n0.getMonth(),n0.getDate());
+var SID="1aOjMFoUlTJQvAfBpCek64NkjLV45pqps8rM4_S_JEkg",PER=100,DAY=864e5,n0=new Date(),TODAY=Date.UTC(n0.getFullYear(),n0.getMonth(),n0.getDate());
 var S={rows:[],month:null,q:"",st:"all",sup:"",pic:"",sort:"inv",dir:"desc",page:1},$=function(i){return document.getElementById(i)};
 var esc=function(s){var d=document.createElement("div");d.textContent=s==null?"":s;return d.innerHTML};
 var rp=function(n){return "Rp"+Math.round(n).toLocaleString("id-ID")};
@@ -194,6 +195,7 @@ function on(id,ev,fn){$(id).addEventListener(ev,fn)}
 on("q","input",function(){S.q=this.value;S.page=1;render()});
 on("sort","change",function(){S.sort=this.value;S.page=1;render()});
 on("dir","change",function(){S.dir=this.value;S.page=1;render()});
+on("per","change",function(){PER=+this.value;S.page=1;render()});
 on("fbtn","click",function(){$("fp").classList.toggle("on")});
 on("st","change",function(){S.st=this.value;S.page=1;render()});
 on("sup","change",function(){S.sup=this.value;S.page=1;render()});
