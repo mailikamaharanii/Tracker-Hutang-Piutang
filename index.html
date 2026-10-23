@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dashboard Hutang PO</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f6f9;--surface:#fff;--ink:#1e2a3a;--mute:#6b7787;--line:#e3e8ee;--th:#e6e6e6;--zebra:#f7f8fa;--orange:#e4640d;--pink:#f5426c;--purple:#7239ea;--blue:#009ef7;--green:#50cd89;--navy:#2b3a55;--soft:#eef2f6;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10161f;--surface:#192230;--ink:#e8edf3;--mute:#98a5b5;--line:#2b3849;--th:#243245;--zebra:#1d2838;--soft:#223045;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#10161f;--surface:#192230;--ink:#e8edf3;--mute:#98a5b5;--line:#2b3849;--th:#243245;--zebra:#1d2838;--soft:#223045;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 14px/1.5 "Poppins",system-ui,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--orange);z-index:10}
+.band{background:var(--orange);color:#fff;padding:24px 16px 96px}
+.wrap{max-width:1180px;margin:0 auto}
+.band .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start}
+h1{font-size:24px;font-weight:700;margin:0}
+.band p{margin:2px 0 0;opacity:.9}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;width:calc(100% - 32px);max-width:1180px;margin:-72px auto 20px}
+.cards .wrap{display:contents}
+.c{border:0;text-align:left;color:#fff;border-radius:12px;padding:18px 20px;cursor:pointer;font:inherit;min-height:112px}
+.c b{display:block;font-size:22px;font-weight:600;line-height:1.25;overflow-wrap:anywhere}
+.c span{display:block;font-weight:600;margin-top:6px}
+.c small{display:block;opacity:.85;font-size:12px}
+.c:hover{filter:brightness(1.07)}
+.c[aria-pressed="true"]{outline:3px solid var(--ink);outline-offset:2px}
+.cat{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px;font-weight:600}
+.c.pink{background:var(--pink)}.c.purple{background:var(--purple)}.c.blue{background:var(--blue)}.c.green{background:var(--green)}.c.navy{background:var(--navy)}
+.panel{background:var(--surface);border-radius:14px;padding:20px;width:calc(100% - 32px);max-width:1180px;margin:0 auto 40px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.search{flex:1 1 260px;position:relative}
+.search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--mute)}
+input,select,button{font:inherit;color:var(--ink)}
+.search input{width:100%;background:var(--soft);border:0;border-radius:10px;padding:11px 12px 11px 38px}
+select{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 10px;min-width:0}
+button.b{font-weight:600;border:0;border-radius:8px;padding:10px 16px;cursor:pointer}
+.b.soft{background:var(--soft);color:var(--blue)}.b.pur{background:var(--purple);color:#fff}.b.ghost{background:var(--surface);border:1px solid var(--line)}
+button:disabled{opacity:.5;cursor:default}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.fp{display:none;gap:10px;flex-wrap:wrap;align-items:flex-end;background:var(--soft);border-radius:10px;padding:12px;margin-bottom:14px}
+.fp.on{display:flex}
+.fp label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--mute);font-weight:500}
+.tw{overflow-x:auto;border-radius:8px}
+table{border-collapse:collapse;width:100%;min-width:1300px}
+th{background:var(--th);text-align:left;font-weight:500;padding:10px 12px;white-space:nowrap}
+td{padding:10px 12px;vertical-align:top;border-bottom:1px solid var(--line)}
+tbody tr:nth-child(even){background:var(--zebra)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+td.p{max-width:260px}.vm{color:var(--mute);font-size:12px}
+.chip{display:inline-block;font-size:12px;font-weight:600;padding:2px 10px;border-radius:99px;color:#fff;white-space:nowrap}
+.chip.late{background:var(--pink)}.chip.soon{background:var(--purple)}.chip.lunas{background:var(--green)}.chip.none{background:var(--mute)}
+.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;margin-top:14px;color:var(--mute)}
+.pg{display:flex;gap:8px;align-items:center}
+.msg{margin:16px auto;width:calc(100% - 32px);max-width:1180px;padding:20px;border:2px dashed var(--line);border-radius:12px;text-align:center;color:var(--mute)}
+.msg.err{color:var(--pink);border-color:var(--pink)}
+.note{margin:-24px auto 40px;width:calc(100% - 32px);max-width:1180px;color:var(--mute);font-size:13px}
+</style>
+</head>
+<body>
+<div class="band"><div class="wrap">
+  <div><h1>Dashboard Hutang PO</h1><p>Data langsung dari sheet REQUEST PO, tab PO. <span id="stamp"></span></p></div>
+  <div class="tools"><select id="month" aria-label="Bulan"></select></div>
+</div></div>
+<div class="cards" id="cards"><div class="wrap"></div></div>
+<div id="msg"></div>
+<div class="panel" id="panel" hidden>
+  <div class="bar">
+    <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Cari supplier, kode order, no invoice, atau faktur pajak…" aria-label="Cari supplier, kode order, no invoice, atau faktur pajak"></div>
+    <select id="sort" aria-label="Urutkan">
+      <option value="inv">Urutkan: Tanggal Invoice</option><option value="jt">Urutkan: Jatuh Tempo</option><option value="tag">Urutkan: Total Tagihan</option>
+      <option value="sisa">Urutkan: Sisa Tagihan</option><option value="sup">Urutkan: Supplier</option><option value="kode">Urutkan: Kode Order</option><option value="pic">Urutkan: PIC</option></select>
+    <select id="dir" aria-label="Arah urutan"><option value="asc">A-Z</option><option value="desc" selected>Z-A</option></select>
+    <button class="b soft" id="fbtn">Filter</button>
+    <button class="b pur" id="refresh">Refresh</button>
+  </div>
+  <div class="fp" id="fp">
+    <label>Status<select id="st">
+      <option value="all">Semua</option><option value="open">Belum dibayar</option><option value="late">Lewat jatuh tempo</option><option value="soon">Akan jatuh tempo</option>
+      <option value="lunas">Lunas</option><option value="paid">Dibayar di bulan terpilih</option><option value="new">Tercatat di bulan terpilih</option></select></label>
+    <label>Supplier<select id="sup"><option value="">Semua supplier</option></select></label>
+    <label>PIC<select id="pic"><option value="">Semua PIC</option></select></label>
+    <button class="b ghost" id="reset">Reset filter</button>
+  </div>
+  <div class="cat" id="cat" hidden></div><div class="tw"><table><thead><tr>
+    <th>No</th><th>PIC</th><th>Tanggal Invoice</th><th>No Invoice</th><th>No Faktur Pajak</th><th>Supplier</th><th>Kode Order</th><th>Nama Produk</th>
+    <th class="n">Total Tagihan</th><th class="n">Sisa Tagihan</th><th>Jatuh Tempo</th><th>Status</th></tr></thead><tbody id="tb"></tbody></table></div>
+  <div class="foot"><span id="info"></span><div class="pg"><button class="b ghost" id="prev">Sebelumnya</button><span id="pn"></span><button class="b ghost" id="next">Berikutnya</button></div></div>
+</div>
+<p class="note" id="note" hidden>Hutang berjalan = baris dengan sisa tagihan lebih dari nol. Lewat tempo dan akan jatuh tempo dihitung dari tanggal jatuh tempo; baris tanpa tanggal jatuh tempo masuk total belum dibayar saja. Kartu ikut berubah saat kamu mencari, dan bisa diklik untuk memfilter tabel.</p>
+
+<script>
+(function(){
+var SID="1aOjMFoUlTJQvAfBpCek64NkjLV45pqps8rM4_S_JEkg",PER=25,DAY=864e5,n0=new Date(),TODAY=Date.UTC(n0.getFullYear(),n0.getMonth(),n0.getDate());
+var S={rows:[],month:null,q:"",st:"all",sup:"",pic:"",sort:"inv",dir:"desc",page:1},$=function(i){return document.getElementById(i)};
+var esc=function(s){var d=document.createElement("div");d.textContent=s==null?"":s;return d.innerHTML};
+var rp=function(n){return "Rp"+Math.round(n).toLocaleString("id-ID")};
+var MON={jan:1,feb:2,mar:3,apr:4,mei:5,may:5,jun:6,jul:7,agu:8,agt:8,aug:8,sep:9,okt:10,oct:10,nov:11,des:12,dec:12};
+function dt(s){s=String(s||"").trim();var m,y,mo,d;if(!s)return null;
+  if(m=s.match(/^(\d{1,2})[\s-]+([A-Za-z]+)[\s,-]+(\d{2,4})/)){d=+m[1];mo=MON[m[2].slice(0,3).toLowerCase()];y=+m[3]}
+  else if(m=s.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})/)){d=+m[1];mo=+m[2];y=+m[3]}
+  else if(m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/)){y=+m[1];mo=+m[2];d=+m[3]}else return null;
+  if(!mo)return null;if(y<100)y+=2000;return y<2000?null:Date.UTC(y,mo-1,d)}
+function num(s){s=String(s==null?"":s).replace(/rp|\s/gi,"").replace(/[^\d.,-]/g,"");if(!/\d/.test(s))return 0;
+  var dots=(s.match(/\./g)||[]).length,com=(s.match(/,/g)||[]).length;
+  if(dots&&com){var l=Math.max(s.lastIndexOf("."),s.lastIndexOf(",")),dec=s[l],o=dec==="."?",":".";s=s.split(o).join("").replace(dec,".")}
+  else if(dots>1)s=s.split(".").join("");else if(com>1)s=s.split(",").join("");
+  else if(dots===1&&/\.\d{3}$/.test(s))s=s.replace(".","");else if(com===1)s=/,\d{3}$/.test(s)?s.replace(",",""):s.replace(",",".");
+  var v=parseFloat(s);return isNaN(v)?0:v}
+var mk=function(t){if(t==null)return null;var d=new Date(t);return d.getUTCFullYear()*12+d.getUTCMonth()};
+var mName=function(k){return new Date(Date.UTC(Math.floor(k/12),k%12,1)).toLocaleDateString("id-ID",{month:"long",year:"numeric",timeZone:"UTC"})};
+var fd=function(t){return t?new Date(t).toLocaleDateString("id-ID",{day:"numeric",month:"short",year:"numeric",timeZone:"UTC"}):"-"};
+var late=function(r){return r.sisa>0&&r.jt&&r.jt<TODAY?Math.round((TODAY-r.jt)/DAY):0};
+var sum=function(a,f){return a.reduce(function(x,r){return x+f(r)},0)};
+
+function pa(s){var inv=[],fp=[],cl=function(v){return v.replace(/^[:;=\s]+/,"").trim()},isfp=function(v){return /^0\d{14,17}$/.test(v.replace(/\s+/g,""))};
+  String(s||"").split(/\r\n|\r|\n/).forEach(function(l){l=l.trim();if(!l||/^dp$/i.test(l))return;var m,v;
+    if(m=l.match(/^(?:no\.?\s*)?(?:fp|nf|np)\b\s*[:;=-]?\s*(.*)$/i)){v=cl(m[1]);if(v)fp.push(v.replace(/\s+/g,""));return}
+    if(m=l.match(/^(?:inv(?:oice)?|nv)\s*[:;=]\s*(.*)$/i)){v=cl(m[1]);if(!v)return;if(isfp(v))fp.push(v.replace(/\s+/g,""));else inv.push(v);return}
+    if(isfp(l)){fp.push(l.replace(/\s+/g,""));return}
+    inv.push(l)});
+  var u=function(a){return a.filter(function(x,i){return a.indexOf(x)===i}).join(", ")};return {inv:u(inv),fp:u(fp)}}
+var CSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vRGTPF0a55FYsexpdOTv_947xAkMqdr35wilFjSRNAjpJgycQeFFqUGKcMxGPetEv5yUgfyd9foYX-6/pub?gid=0&single=true&output=csv";
+function parseCSV(t){var rows=[],row=[],f="",q=false,i=0,c;
+  for(;i<t.length;i++){c=t[i];
+    if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++}else q=false}else f+=c}
+    else if(c==='"')q=true;
+    else if(c===","){row.push(f);f=""}
+    else if(c==="\n"){row.push(f);rows.push(row);row=[];f=""}
+    else if(c!=="\r")f+=c}
+  if(f!==""||row.length){row.push(f);rows.push(row)}
+  return rows}
+function msg(t,err){$("msg").innerHTML=t?'<div class="msg'+(err?" err":"")+'">'+esc(t)+'</div>':""}
+async function load(force){
+  $("refresh").disabled=true;
+  try{
+    if(CSV_URL.indexOf("http")!==0){msg("Link CSV belum diisi. Isi variabel CSV_URL di index.html dengan link CSV dari Publish to web.",1);return}
+    var res=await fetch(CSV_URL+(CSV_URL.indexOf("?")>-1?"&":"?")+"t="+Date.now(),{cache:"no-store"});
+    if(!res.ok)throw new Error("HTTP "+res.status);
+    var T=parseCSV(await res.text()).slice(2),rows=[],g=function(r,k){return String(r[k]==null?"":r[k]).trim()};
+    T.forEach(function(r){
+      var tag=num(r[36]),pay=num(r[37]),sc=r[38],sisa=(sc===undefined||String(sc).trim()==="")?Math.max(tag-pay,0):num(sc);
+      if(!(tag>0||sisa>0||pay>0))return;
+      var p=pa(r[40]);
+      rows.push({kode:g(r,7)||"(tanpa kode)",sup:g(r,14)||"(tanpa supplier)",spk:g(r,8),prod:g(r,9),pic:g(r,0),noinv:p.inv,fp:p.fp,
+        inv:dt(r[31]),jt:dt(r[32]),tag:tag,pay:pay,sisa:sisa,tb:dt(r[41])});
+    });
+    S.rows=rows;msg("");$("panel").hidden=false;$("note").hidden=false;
+    $("stamp").textContent="Diperbarui "+new Date().toLocaleTimeString("id-ID",{hour:"2-digit",minute:"2-digit"})+".";
+    fill();render();
+  }catch(e){
+    msg("Gagal mengambil data"+(e&&e.message?" ("+e.message+")":"")+". Pastikan sheet PO sudah dipublikasikan ke web sebagai CSV dan link-nya benar, lalu klik Refresh.",1);
+    $("panel").hidden=!S.rows.length;
+  }finally{$("refresh").disabled=false}
+}
+function uniq(k){var s={};S.rows.forEach(function(r){if(r[k])s[r[k]]=1});return Object.keys(s).sort(function(a,b){return a.localeCompare(b,"id")})}
+function fill(){
+  var cur=mk(TODAY),set={};set[cur]=1;S.rows.forEach(function(r){var a=mk(r.inv),b=mk(r.tb);if(a)set[a]=1;if(b)set[b]=1});
+  var ks=Object.keys(set).map(Number).sort(function(a,b){return b-a}).filter(function(k){return k<=cur});
+  if(S.month==null||ks.indexOf(S.month)<0)S.month=cur;
+  $("month").innerHTML=ks.map(function(k){return '<option value="'+k+'"'+(k===S.month?" selected":"")+'>'+mName(k)+'</option>'}).join("");
+  [["sup","Semua supplier"],["pic","Semua PIC"]].forEach(function(p){
+    $(p[0]).innerHTML='<option value="">'+p[1]+'</option>'+uniq(p[0]).map(function(v){return '<option'+(S[p[0]]===v?" selected":"")+'>'+esc(v)+'</option>'}).join("")});
+}
+function match(r,st){var M=S.month;
+  return st==="all"?true:st==="open"?r.sisa>0:st==="late"?late(r)>0:st==="soon"?(r.sisa>0&&r.jt&&r.jt>=TODAY):st==="lunas"?r.sisa<=0:
+    st==="paid"?(r.pay>0&&mk(r.tb)===M):(r.tag>0&&mk(r.inv)===M)}
+function render(){
+  var q=S.q.trim().toLowerCase(),M=S.month;
+  var base=S.rows.filter(function(r){return !q||(r.sup+" "+r.kode+" "+r.spk+" "+r.noinv+" "+r.fp).toLowerCase().indexOf(q)>-1});
+  var def=[["paid","green","Total Hutang Terbayar Bulan Ini","pay","tb"],["new","blue","Total Invoice Tercatat Bulan Ini","tag","inv"],["late","pink","Total Tagihan Lewat Tempo","sisa"],["soon","purple","Total Tagihan Akan Jatuh Tempo","sisa"],["open","navy","Total Seluruh Tagihan Belum Dibayar","sisa"]];
+  $("cards").firstChild.innerHTML=def.map(function(d){var rs=base.filter(function(r){return match(r,d[0])});
+    return '<button class="c '+d[1]+'" data-st="'+d[0]+'" aria-pressed="'+(S.st===d[0])+'"><b>'+rp(sum(rs,function(r){return d[0]==="paid"?r.pay:d[0]==="new"?r.tag:r.sisa}))+'</b><span>'+d[2]+'</span><small>'+rs.length+' baris'+(d[0]==="paid"||d[0]==="new"?", "+mName(M):"")+'</small></button>'}).join("");
+  var rows=base.filter(function(r){return match(r,S.st)&&(!S.sup||r.sup===S.sup)&&(!S.pic||r.pic===S.pic)});
+  var k=S.sort,sg=S.dir==="asc"?1:-1;
+  rows.sort(function(a,b){var x=a[k],y=b[k];if(x==null||x==="")return y==null||y===""?0:1;if(y==null||y==="")return -1;
+    return (typeof x==="string"?x.localeCompare(y,"id"):x-y)*sg});
+  var cd=def.filter(function(d){return d[0]===S.st})[0],lb=cd?cd[2]:$("st").options[$("st").selectedIndex].text;
+  $("cat").hidden=S.st==="all";
+  $("cat").innerHTML=S.st==="all"?"":'<span>Menampilkan: '+esc(lb)+(S.st==="paid"||S.st==="new"?", "+esc(mName(M)):"")+' ('+rows.length.toLocaleString("id-ID")+' baris)</span><button class="b ghost" id="clr">Tampilkan semua</button>';
+  var pages=Math.max(1,Math.ceil(rows.length/PER));if(S.page>pages)S.page=pages;
+  var st=(S.page-1)*PER,pg=rows.slice(st,st+PER);
+  $("tb").innerHTML=pg.length?pg.map(function(r,i){var l=late(r),chip=r.sisa<=0?'<span class="chip lunas">Lunas</span>':l?'<span class="chip late">Lewat '+l+' hari</span>':r.jt?'<span class="chip soon">Akan jatuh tempo</span>':'<span class="chip none">Tanpa tgl tempo</span>';
+    return '<tr><td>'+(st+i+1)+'</td><td>'+esc(r.pic||"-")+'</td><td>'+fd(r.inv)+'</td><td>'+esc(r.noinv||"-")+'</td><td>'+esc(r.fp||"-")+'</td><td>'+esc(r.sup)+'</td><td>'+esc(r.kode)+(r.spk?'<br><span class="vm">'+esc(r.spk)+'</span>':'')+'</td><td class="p">'+esc(r.prod||"-")+
+      '</td><td class="n">'+rp(r.tag)+'</td><td class="n">'+rp(r.sisa)+'</td><td>'+fd(r.jt)+'</td><td>'+chip+'</td></tr>'}).join(""):'<tr><td colspan="12" style="text-align:center;color:var(--mute);padding:28px">Tidak ada data yang cocok.</td></tr>';
+  $("info").textContent=rows.length?"Menampilkan "+(st+1)+" sampai "+(st+pg.length)+" dari "+rows.length.toLocaleString("id-ID")+" baris. Total tagihan "+rp(sum(rows,function(r){return r.tag}))+", sisa "+rp(sum(rows,function(r){return r.sisa})):"";
+  $("pn").textContent="Hal "+S.page+" dari "+pages;$("prev").disabled=S.page<=1;$("next").disabled=S.page>=pages;
+}
+function on(id,ev,fn){$(id).addEventListener(ev,fn)}
+on("q","input",function(){S.q=this.value;S.page=1;render()});
+on("sort","change",function(){S.sort=this.value;S.page=1;render()});
+on("dir","change",function(){S.dir=this.value;S.page=1;render()});
+on("fbtn","click",function(){$("fp").classList.toggle("on")});
+on("st","change",function(){S.st=this.value;S.page=1;render()});
+on("sup","change",function(){S.sup=this.value;S.page=1;render()});
+on("pic","change",function(){S.pic=this.value;S.page=1;render()});
+on("reset","click",function(){S.st="all";S.sup="";S.pic="";S.q="";S.page=1;$("q").value="";$("st").value="all";$("sup").value="";$("pic").value="";render()});
+on("month","change",function(){S.month=+this.value;S.page=1;render()});
+on("refresh","click",function(){load(true)});
+on("prev","click",function(){S.page--;render()});
+on("next","click",function(){S.page++;render()});
+on("cards","click",function(e){var b=e.target.closest("button");if(!b)return;S.st=S.st===b.dataset.st?"all":b.dataset.st;$("st").value=S.st;S.page=1;render();
+  if(S.st!=="all")$("panel").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth",block:"start"})});
+on("cat","click",function(e){if(!e.target.closest("button"))return;S.st="all";$("st").value="all";S.page=1;render()});
+load(false);
+})();
+</script>
+</body>
+</html>
