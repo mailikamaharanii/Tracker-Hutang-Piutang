@@ -6,7 +6,7 @@
 <title>Dashboard Hutang PO</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f4f6f9;--surface:#fff;--ink:#1e2a3a;--mute:#6b7787;--line:#e3e8ee;--th:#e6e6e6;--zebra:#f7f8fa;--orange:#e4640d;--pink:#f5426c;--purple:#7239ea;--blue:#009ef7;--green:#50cd89;--navy:#2b3a55;--soft:#eef2f6;
+:root{--bg:#f4f6f9;--surface:#fff;--ink:#1e2a3a;--mute:#6b7787;--line:#e3e8ee;--th:#e6e6e6;--zebra:#f7f8fa;--orange:#e4640d;--pink:#f5426c;--purple:#7239ea;--blue:#009ef7;--green:#50cd89;--navy:#2b3a55;--teal:#0f9d94;--soft:#eef2f6;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10161f;--surface:#192230;--ink:#e8edf3;--mute:#98a5b5;--line:#2b3849;--th:#243245;--zebra:#1d2838;--soft:#223045;color-scheme:dark}}
 :root[data-theme="dark"]{--bg:#10161f;--surface:#192230;--ink:#e8edf3;--mute:#98a5b5;--line:#2b3849;--th:#243245;--zebra:#1d2838;--soft:#223045;color-scheme:dark}
@@ -20,7 +20,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 h1{font-size:24px;font-weight:700;margin:0}
 .band p{margin:2px 0 0;opacity:.9}
 .tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;width:calc(100% - 32px);max-width:1180px;margin:-72px auto 20px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;width:calc(100% - 32px);max-width:1180px;margin:-72px auto 20px}
 .cards .wrap{display:contents}
 .c{border:0;text-align:left;color:#fff;border-radius:12px;padding:18px 20px;cursor:pointer;font:inherit;min-height:112px}
 .c b{display:block;font-size:22px;font-weight:600;line-height:1.25;overflow-wrap:anywhere}
@@ -29,7 +29,7 @@ h1{font-size:24px;font-weight:700;margin:0}
 .c:hover{filter:brightness(1.07)}
 .c[aria-pressed="true"]{outline:3px solid var(--ink);outline-offset:2px}
 .cat{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px;font-weight:600}
-.c.pink{background:var(--pink)}.c.purple{background:var(--purple)}.c.blue{background:var(--blue)}.c.green{background:var(--green)}.c.navy{background:var(--navy)}
+.c.pink{background:var(--pink)}.c.purple{background:var(--purple)}.c.blue{background:var(--blue)}.c.green{background:var(--green)}.c.navy{background:var(--navy)}.c.teal{background:var(--teal)}
 .panel{background:var(--surface);border-radius:14px;padding:20px;width:calc(100% - 32px);max-width:1180px;margin:0 auto 40px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
 .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
 .search{flex:1 1 260px;position:relative}
@@ -82,7 +82,7 @@ td.p{max-width:260px}.vm{color:var(--mute);font-size:12px}
   <div class="fp" id="fp">
     <label>Status<select id="st">
       <option value="all">Semua</option><option value="open">Belum dibayar</option><option value="late">Lewat jatuh tempo</option><option value="soon">Akan jatuh tempo</option>
-      <option value="lunas">Lunas</option><option value="paid">Dibayar di bulan terpilih</option><option value="new">Tercatat di bulan terpilih</option></select></label>
+      <option value="lunas">Lunas</option><option value="paid">Dibayar di bulan terpilih</option><option value="dpo">DPO: dibayar di bulan terpilih</option><option value="new">Tercatat di bulan terpilih</option></select></label>
     <label>Supplier<select id="sup"><option value="">Semua supplier</option></select></label>
     <label>PIC<select id="pic"><option value="">Semua PIC</option></select></label>
     <button class="b ghost" id="reset">Reset filter</button>
@@ -92,7 +92,7 @@ td.p{max-width:260px}.vm{color:var(--mute);font-size:12px}
     <th class="n">Total Tagihan</th><th class="n">Sisa Tagihan</th><th>Jatuh Tempo</th><th>Status</th></tr></thead><tbody id="tb"></tbody></table></div>
   <div class="foot"><span id="info"></span><div class="pg"><button class="b ghost" id="prev">Sebelumnya</button><span id="pn"></span><button class="b ghost" id="next">Berikutnya</button></div></div>
 </div>
-<p class="note" id="note" hidden>Hutang berjalan = baris dengan sisa tagihan lebih dari nol. Lewat tempo dan akan jatuh tempo dihitung dari tanggal jatuh tempo; baris tanpa tanggal jatuh tempo masuk total belum dibayar saja. Kartu ikut berubah saat kamu mencari, dan bisa diklik untuk memfilter tabel.</p>
+<p class="note" id="note" hidden>Hutang berjalan = baris dengan sisa tagihan lebih dari nol. Lewat tempo dan akan jatuh tempo dihitung dari tanggal jatuh tempo; baris tanpa tanggal jatuh tempo masuk total belum dibayar saja. Kartu DPO = jumlah HargaxDPO dibagi jumlah terbayar, untuk baris yang tanggal bayarnya jatuh di bulan terpilih dan kolom DPO-nya terisi. Kartu ikut berubah saat kamu mencari, dan bisa diklik untuk memfilter tabel.</p>
 
 <script>
 (function(){
@@ -148,7 +148,7 @@ async function load(force){
       if(!(tag>0||sisa>0||pay>0))return;
       var p=pa(r[40]);
       rows.push({kode:g(r,7)||"(tanpa kode)",sup:g(r,14)||"(tanpa supplier)",spk:g(r,8),prod:g(r,9),pic:g(r,0),noinv:p.inv,fp:p.fp,
-        inv:dt(r[31]),jt:dt(r[32]),tag:tag,pay:pay,sisa:sisa,tb:dt(r[41])});
+        inv:dt(r[31]),jt:dt(r[32]),tag:tag,pay:pay,sisa:sisa,tb:dt(r[41]),dpo:String(r[42]==null?"":r[42]).trim()===""?null:num(r[42]),hd:num(r[43])});
     });
     S.rows=rows;msg("");$("panel").hidden=false;$("note").hidden=false;
     $("stamp").textContent="Diperbarui "+new Date().toLocaleTimeString("id-ID",{hour:"2-digit",minute:"2-digit"})+".";
@@ -169,20 +169,21 @@ function fill(){
 }
 function match(r,st){var M=S.month;
   return st==="all"?true:st==="open"?r.sisa>0:st==="late"?late(r)>0:st==="soon"?(r.sisa>0&&r.jt&&r.jt>=TODAY):st==="lunas"?r.sisa<=0:
-    st==="paid"?(r.pay>0&&mk(r.tb)===M):(r.tag>0&&mk(r.inv)===M)}
+    st==="paid"?(r.pay>0&&mk(r.tb)===M):st==="dpo"?(r.pay>0&&r.dpo!=null&&mk(r.tb)===M):(r.tag>0&&mk(r.inv)===M)}
+function dpoTxt(a){var d=sum(a,function(r){return r.pay}),n=sum(a,function(r){return r.hd});return d>0?(n/d).toLocaleString("id-ID",{maximumFractionDigits:1})+" hari":"-"}
 function render(){
   var q=S.q.trim().toLowerCase(),M=S.month;
   var base=S.rows.filter(function(r){return !q||(r.sup+" "+r.kode+" "+r.spk+" "+r.noinv+" "+r.fp).toLowerCase().indexOf(q)>-1});
-  var def=[["paid","green","Total Hutang Terbayar Bulan Ini","pay","tb"],["new","blue","Total Invoice Tercatat Bulan Ini","tag","inv"],["late","pink","Total Tagihan Lewat Tempo","sisa"],["soon","purple","Total Tagihan Akan Jatuh Tempo","sisa"],["open","navy","Total Seluruh Tagihan Belum Dibayar","sisa"]];
+  var def=[["paid","green","Total Hutang Terbayar Bulan Ini","pay","tb"],["dpo","teal","DPO Rata-rata Bulan Ini","pay","tb"],["new","blue","Total Invoice Tercatat Bulan Ini","tag","inv"],["late","pink","Total Tagihan Lewat Tempo","sisa"],["soon","purple","Total Tagihan Akan Jatuh Tempo","sisa"],["open","navy","Total Seluruh Tagihan Belum Dibayar","sisa"]];
   $("cards").firstChild.innerHTML=def.map(function(d){var rs=base.filter(function(r){return match(r,d[0])});
-    return '<button class="c '+d[1]+'" data-st="'+d[0]+'" aria-pressed="'+(S.st===d[0])+'"><b>'+rp(sum(rs,function(r){return d[0]==="paid"?r.pay:d[0]==="new"?r.tag:r.sisa}))+'</b><span>'+d[2]+'</span><small>'+rs.length+' baris'+(d[0]==="paid"||d[0]==="new"?", "+mName(M):"")+'</small></button>'}).join("");
+    return '<button class="c '+d[1]+'" data-st="'+d[0]+'" aria-pressed="'+(S.st===d[0])+'"><b>'+(d[0]==="dpo"?dpoTxt(rs):rp(sum(rs,function(r){return d[0]==="paid"?r.pay:d[0]==="new"?r.tag:r.sisa})))+'</b><span>'+d[2]+'</span><small>'+rs.length+' baris'+(d[0]==="paid"||d[0]==="new"||d[0]==="dpo"?", "+mName(M):"")+'</small></button>'}).join("");
   var rows=base.filter(function(r){return match(r,S.st)&&(!S.sup||r.sup===S.sup)&&(!S.pic||r.pic===S.pic)});
   var k=S.sort,sg=S.dir==="asc"?1:-1;
   rows.sort(function(a,b){var x=a[k],y=b[k];if(x==null||x==="")return y==null||y===""?0:1;if(y==null||y==="")return -1;
     return (typeof x==="string"?x.localeCompare(y,"id"):x-y)*sg});
   var cd=def.filter(function(d){return d[0]===S.st})[0],lb=cd?cd[2]:$("st").options[$("st").selectedIndex].text;
   $("cat").hidden=S.st==="all";
-  $("cat").innerHTML=S.st==="all"?"":'<span>Menampilkan: '+esc(lb)+(S.st==="paid"||S.st==="new"?", "+esc(mName(M)):"")+' ('+rows.length.toLocaleString("id-ID")+' baris)</span><button class="b ghost" id="clr">Tampilkan semua</button>';
+  $("cat").innerHTML=S.st==="all"?"":'<span>Menampilkan: '+esc(lb)+(S.st==="paid"||S.st==="new"||S.st==="dpo"?", "+esc(mName(M)):"")+' ('+rows.length.toLocaleString("id-ID")+' baris)</span><button class="b ghost" id="clr">Tampilkan semua</button>';
   var pages=Math.max(1,Math.ceil(rows.length/PER));if(S.page>pages)S.page=pages;
   var st=(S.page-1)*PER,pg=rows.slice(st,st+PER);
   $("tb").innerHTML=pg.length?pg.map(function(r,i){var l=late(r),chip=r.sisa<=0?'<span class="chip lunas">Lunas</span>':l?'<span class="chip late">Lewat '+l+' hari</span>':r.jt?'<span class="chip soon">Akan jatuh tempo</span>':'<span class="chip none">Tanpa tgl tempo</span>';
